@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Settings - Focus Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="alarm-page">
+    <div class="container">
+        <div class="timer-section alarm-display">
+            <h2>🔊 Select Alarm Sound</h2>
+            <p>Click on a sound to select it. Click again to stop preview.</p>
+            
+            <div class="sound-options">
+                <div class="sound-option" data-sound="buzz.wav" data-name="Classic Buzz">
+                    <span class="sound-icon">⏰</span>
+                    <div class="sound-info">
+                        <h3>Classic Buzz</h3>
+                        <p>Traditional alarm sound</p>
+                    </div>
+                    <div class="sound-status">Click to preview</div>
+                </div>
+                
+                <div class="sound-option" data-sound="Apocolypse.mp3" data-name="Apocalypse">
+                    <span class="sound-icon">🌋</span>
+                    <div class="sound-info">
+                        <h3>Apocalypse</h3>
+                        <p>Dramatic alarm sound</p>
+                    </div>
+                    <div class="sound-status">Click to preview</div>
+                </div>
+                
+                <div class="sound-option" data-sound="Flat line.mp3" data-name="Flatline">
+                    <span class="sound-icon">📉</span>
+                    <div class="sound-info">
+                        <h3>Flatline</h3>
+                        <p>Medical monitor sound</p>
+                    </div>
+                    <div class="sound-status">Click to preview</div>
+                </div>
+                
+                <div class="sound-option" data-sound="Doctor Philip.mp3" data-name="Doctor Philip">
+                    <span class="sound-icon">👨‍⚕️</span>
+                    <div class="sound-info">
+                        <h3>Doctor Philip</h3>
+                        <p>Professional alert sound</p>
+                    </div>
+                    <div class="sound-status">Click to preview</div>
+                </div>
+                
+                <div class="sound-option" data-sound="sunrise.mp3" data-name="Sunrise">
+                    <span class="sound-icon">🌅</span>
+                    <div class="sound-info">
+                        <h3>Sunrise</h3>
+                        <p>Gentle morning sound</p>
+                    </div>
+                    <div class="sound-status">Click to preview</div>
+                </div>
+            </div>
+            
+            <div class="current-selection">
+                <h3>Currently Selected: <span id="currentSoundName">Classic Buzz</span></h3>
+            </div>
+            
+            <div class="sound-actions">
+                <a href="index.html" class="back-btn">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <audio id="previewSound"></audio>
+
+    <script>
+        let currentlyPlaying = null;
+        const previewSound = document.getElementById('previewSound');
+        
+        // Load previously selected sound
+        const selectedSound = localStorage.getItem('alarmSound') || 'buzz.wav';
+        const selectedSoundName = localStorage.getItem('alarmSoundName') || 'Classic Buzz';
+        
+        // Update current selection display
+        document.getElementById('currentSoundName').textContent = selectedSoundName;
+        
+        // Highlight currently selected sound
+        document.addEventListener('DOMContentLoaded', function() {
+            const soundOptions = document.querySelectorAll('.sound-option');
+            soundOptions.forEach(option => {
+                const soundFile = option.getAttribute('data-sound');
+                if (soundFile === selectedSound) {
+                    option.classList.add('selected');
+                }
+            });
+        });
+        
+        // Sound selection and preview
+        document.querySelectorAll('.sound-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const soundFile = this.getAttribute('data-sound');
+                const soundName = this.getAttribute('data-name');
+                const statusElement = this.querySelector('.sound-status');
+                
+                // If this sound is already playing, stop it
+                if (currentlyPlaying === soundFile) {
+                    previewSound.pause();
+                    previewSound.currentTime = 0;
+                    currentlyPlaying = null;
+                    statusElement.textContent = 'Click to preview';
+                    this.classList.remove('playing');
+                    return;
+                }
+                
+                // Stop any currently playing sound
+                if (currentlyPlaying) {
+                    previewSound.pause();
+                    previewSound.currentTime = 0;
+                    const currentlyPlayingElement = document.querySelector('.sound-option.playing');
+                    if (currentlyPlayingElement) {
+                        currentlyPlayingElement.querySelector('.sound-status').textContent = 'Click to preview';
+                        currentlyPlayingElement.classList.remove('playing');
+                    }
+                }
+                
+                // Play the new sound
+                previewSound.src = soundFile;
+                previewSound.play().catch(e => {
+                    console.log('Preview failed:', e);
+                    statusElement.textContent = 'Error playing';
+                });
+                
+                currentlyPlaying = soundFile;
+                statusElement.textContent = 'Playing... Click to stop';
+                this.classList.add('playing');
+                
+                // Set this as the selected sound
+                localStorage.setItem('alarmSound', soundFile);
+                localStorage.setItem('alarmSoundName', soundName);
+                document.getElementById('currentSoundName').textContent = soundName;
+                
+                // Update selection highlights
+                document.querySelectorAll('.sound-option.selected').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+        
+        // Stop sound when it ends naturally
+        previewSound.addEventListener('ended', function() {
+            if (currentlyPlaying) {
+                const currentlyPlayingElement = document.querySelector('.sound-option.playing');
+                if (currentlyPlayingElement) {
+                    currentlyPlayingElement.querySelector('.sound-status').textContent = 'Click to preview';
+                    currentlyPlayingElement.classList.remove('playing');
+                }
+                currentlyPlaying = null;
+            }
+        });
+    </script>
+</body>
+</html>

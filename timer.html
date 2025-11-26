@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Timer Section -->
+        <div id="mainTimer" class="timer-section">
+            <h2>Set Work Timer</h2>
+            <div class="button-group">
+                <button onclick="startTimer(30)">30 sec</button>
+                <button onclick="startTimer(1 * 60)">1 min</button>
+                <button onclick="startTimer(10 * 60)">10 min</button>
+                <button onclick="startTimer(20 * 60)">20 min</button>
+                <button onclick="startTimer(30 * 60)">30 min</button>
+            </div>
+            <a href="index.html" class="back-btn">← Back to Home</a>
+        </div>
+
+        <!-- Break Timer Section (hidden initially) -->
+        <div id="breakTimer" class="timer-section hidden">
+            <h2>Break Time Starting...</h2>
+            <div class="timer-display" id="breakDisplay">02:00</div>
+            <p>Your break will start automatically</p>
+        </div>
+
+        <!-- Active Timer Display -->
+        <div id="activeTimer" class="timer-section hidden">
+            <h2 id="timerLabel">Work Timer</h2>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            <div class="active-timer-buttons">
+                <button onclick="togglePause()" class="pause-btn">PAUSE</button>
+                <button onclick="resetTimer()" class="reset-btn">Reset</button>
+            </div>
+            <a href="timer.html" class="back-btn">← Back to Home</a>
+        </div>
+
+        <!-- Audio element for alarm -->
+        <audio id="alarmSound" src="buzz.wav" preload="auto"></audio>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        
+    // Get the selected sound and set it for the alarm
+    const selectedSound = localStorage.getItem('alarmSound') || 'buzz.wav';
+    const alarmSound = document.getElementById('alarmSound');
+    alarmSound.src = selectedSound;
+
+    // Rest of your existing timer.html JavaScript code...
+    let originalWorkTime = 0;
+    // ... continue with your existing code
+        // Timer page specific initialization
+        // `originalWorkTime` already declared above
+        
+        function startTimer(seconds) {
+            originalWorkTime = seconds;
+            
+            // Store the work time in localStorage to pass to alarm page
+            localStorage.setItem('originalWorkTime', seconds);
+            localStorage.setItem('timerType', 'work');
+            
+            startCountdown(seconds, true);
+        }
+
+        function startBreakTimer(seconds) {
+            localStorage.setItem('breakTime', seconds);
+            localStorage.setItem('timerType', 'break');
+            startCountdown(seconds, false);
+        }
+
+        function redirectToAlarmPage(isWorkTimerEnded) {
+            // Store alarm type in localStorage
+            localStorage.setItem('alarmType', isWorkTimerEnded ? 'workComplete' : 'breakComplete');
+            
+            // Redirect to alarm page
+            window.location.href = 'alarm.html';
+        }
+
+        // Override the playAlarmForThirtySeconds function for this page
+        function playAlarmForThirtySeconds(callback, isWorkTimerEnded = true) {
+            redirectToAlarmPage(isWorkTimerEnded);
+        }
+    </script>
+</body>
+</html>

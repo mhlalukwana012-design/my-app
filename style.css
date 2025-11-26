@@ -1,0 +1,830 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #2c2c2c; /* Dark grey background */
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease; /* Smooth transition for alarm */
+}
+
+.container {
+    background: #1a1a1a; /* Dark container */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid #333;
+}
+
+h1 {
+    color: white;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.timer-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #2c2c2c; /* Dark grey sections */
+    border: 1px solid #444;
+}
+
+h2 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+button {
+    background: #444; /* Dark grey buttons */
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    min-width: 70px;
+    flex: 1;
+    border: 1px solid #555;
+}
+
+button:hover {
+    background: #555; /* Lighter grey on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.reset-btn {
+    background: #d32f2f; /* Red reset button */
+    border: 1px solid #ff5252;
+}
+
+.reset-btn:hover {
+    background: #b71c1c;
+}
+
+.timer-display {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Alarm display styling */
+.container > .timer-section:last-child {
+    background: #d32f2f; /* Red background for alarm */
+    border: 2px solid #ff5252;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.container > .timer-section:last-child h2 {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.container > .timer-section:last-child .timer-display {
+    color: white;
+    font-size: 2.5rem;
+}
+
+.container > .timer-section:last-child p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0.5rem 0;
+}
+
+/* Stop alarm button styling */
+.stop-alarm-btn {
+    background: #4CAF50 !important;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    border: 1px solid #66bb6a;
+}
+
+.stop-alarm-btn:hover {
+    background: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation for timer */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 1s infinite;
+    color: #ff5252 !important; /* Red pulse for low time */
+}
+
+/* Break timer specific styling */
+#breakTimer {
+    background: #1b5e20; /* Dark green for break section */
+    border: 1px solid #2e7d32;
+}
+
+#breakTimer h2 {
+    color: #a5d6a7;
+}
+
+/* Active timer specific styling */
+#activeTimer {
+    background: #0d47a1; /* Dark blue for active timer */
+    border: 1px solid #1565c0;
+}
+
+#activeTimer h2 {
+    color: #bbdefb;
+}
+
+/* For smaller screens */
+@media (max-width: 480px) {
+    .button-group {
+        gap: 6px;
+    }
+    
+    button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        min-width: 60px;
+    }
+    
+    .container {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .timer-display {
+        font-size: 2.5rem;
+    }
+}
+/* Alarm button group styling */
+.alarm-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+/* Stop alarm button styling */
+.stop-alarm-btn {
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid;
+}
+
+.work-btn {
+    background: #4CAF50 !important; /* Green for work */
+    border-color: #66bb6a;
+}
+
+.work-btn:hover {
+    background: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.break-btn {
+    background: #2196F3 !important; /* Blue for break */
+    border-color: #42a5f5;
+}
+
+.break-btn:hover {
+    background: #1976D2 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* For smaller screens */
+@media (max-width: 480px) {
+    .alarm-button-group {
+        gap: 8px;
+    }
+    
+    .stop-alarm-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+/* GOODLUCK! section styling */
+.good-luck-section {
+    background: #4CAF50 !important; /* Green background */
+    border: 2px solid #66bb6a !important;
+}
+
+.good-luck-section h2 {
+    color: white !important;
+}
+
+.good-luck {
+    color: white !important;
+    font-size: 2.5rem !important;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: pulse 1s infinite;
+}
+
+.good-luck-section p {
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-top: 1rem;
+}
+/* Active timer buttons layout */
+.active-timer-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.active-timer-buttons button {
+    flex: 1;
+    max-width: 120px;
+}
+
+/* Pause button styling */
+.pause-btn {
+    background: #FF9800 !important; /* Orange for pause */
+    border-color: #FFB74D !important;
+}
+
+.pause-btn:hover {
+    background: #F57C00 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.pause-btn.paused {
+    background: #4CAF50 !important; /* Green when paused */
+    border-color: #66bb6a !important;
+}
+
+.pause-btn.paused:hover {
+    background: #45a049 !important;
+}
+
+/* Paused text styling */
+.paused-text {
+    color: #FF9800 !important; /* Orange text when paused */
+    animation: none !important; /* Remove pulse animation when paused */
+}
+
+/* Break timer specific styling */
+#breakTimer {
+    background: #1b5e20 !important; /* Dark green for break section */
+    border: 1px solid #2e7d32 !important;
+}
+
+#breakTimer h2 {
+    color: #a5d6a7 !important;
+}
+
+/* Active timer specific styling */
+#activeTimer {
+    background: #0d47a1 !important; /* Dark blue for active timer */
+    border: 1px solid #1565c0 !important;
+}
+
+#activeTimer h2 {
+    color: #bbdefb !important;
+}
+/* Welcome Page Styling */
+.welcome-section {
+    text-align: center;
+    padding: 1rem;
+}
+
+.welcome-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: white;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.tagline {
+    color: #bbdefb;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.welcome-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.feature-list {
+    margin-bottom: 2rem;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    background: #2c2c2c;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    border: 1px solid #444;
+    text-align: left;
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    min-width: 50px;
+}
+
+.feature-text h3 {
+    color: white;
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+}
+
+.feature-text p {
+    color: #bbdefb;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.timer-options {
+    background: #2c2c2c;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #444;
+}
+
+.timer-options h3 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.quick-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.quick-btn {
+    background: #2196F3 !important;
+    border-color: #42a5f5 !important;
+    flex: 1;
+}
+
+.quick-btn:hover {
+    background: #1976D2 !important;
+}
+
+.start-btn {
+    background: #4CAF50 !important;
+    border-color: #66bb6a !important;
+    padding: 15px 30px !important;
+    font-size: 1.2rem !important;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.start-btn:hover {
+    background: #45a049 !important;
+    transform: translateY(-2px);
+}
+
+.work-break-ratio {
+    background: #2c2c2c;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #444;
+}
+
+.work-break-ratio h4 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.work-break-ratio ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.work-break-ratio li {
+    color: #bbdefb;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #444;
+}
+
+.work-break-ratio li:last-child {
+    border-bottom: none;
+}
+
+/* Back button styling */
+.back-btn {
+    background: #666 !important;
+    border-color: #888 !important;
+    margin-top: 1rem;
+    width: auto;
+    padding: 8px 16px !important;
+}
+
+.back-btn:hover {
+    background: #777 !important;
+}
+
+/* Active timer buttons layout */
+.active-timer-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.active-timer-buttons button {
+    flex: 1;
+    max-width: 120px;
+}
+
+/* Pause button styling */
+.pause-btn {
+    background: #FF9800 !important;
+    border-color: #FFB74D !important;
+}
+
+.pause-btn:hover {
+    background: #F57C00 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.pause-btn.paused {
+    background: #4CAF50 !important;
+    border-color: #66bb6a !important;
+}
+
+.pause-btn.paused:hover {
+    background: #45a049 !important;
+}
+
+/* Paused text styling */
+.paused-text {
+    color: #FF9800 !important;
+    animation: none !important;
+}
+
+/* For smaller screens */
+@media (max-width: 480px) {
+    .welcome-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .feature {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .feature-icon {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .quick-buttons {
+        flex-direction: column;
+    }
+}
+/* Alarm display specific styling */
+.alarm-display {
+    background: #d32f2f !important;
+    border: 2px solid #ff5252 !important;
+}
+
+.alarm-display h2 {
+    color: white !important;
+}
+
+.alarm-display .timer-display {
+    color: white !important;
+}
+
+.alarm-display p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Alarm button group styling */
+.alarm-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+/* Stop alarm button styling */
+.stop-alarm-btn {
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid;
+}
+
+.work-btn {
+    background: #4CAF50 !important;
+    border-color: #66bb6a !important;
+}
+
+.work-btn:hover {
+    background: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.break-btn {
+    background: #2196F3 !important;
+    border-color: #42a5f5 !important;
+}
+
+.break-btn:hover {
+    background: #1976D2 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+/* Alarm display specific styling */
+.alarm-display {
+    background: #d32f2f !important;
+    border: 2px solid #ff5252 !important;
+}
+
+.alarm-display h2 {
+    color: white !important;
+}
+
+.alarm-display .timer-display {
+    color: white !important;
+}
+
+.alarm-display p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Alarm button group styling */
+.alarm-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+/* Stop alarm button styling */
+.stop-alarm-btn {
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid;
+}
+
+.work-btn {
+    background: #4CAF50 !important;
+    border-color: #66bb6a !important;
+}
+
+.work-btn:hover {
+    background: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.break-btn {
+    background: #2196F3 !important;
+    border-color: #42a5f5 !important;
+}
+
+.break-btn:hover {
+    background: #1976D2 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+/* Alarm display specific styling */
+.alarm-display {
+    background: #d32f2f !important;
+    border: 2px solid #ff5252 !important;
+}
+
+.alarm-display h2 {
+    color: white !important;
+}
+
+.alarm-display .timer-display {
+    color: white !important;
+}
+
+.alarm-display p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Alarm button group styling */
+.alarm-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+/* Stop alarm button styling */
+.stop-alarm-btn {
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid;
+}
+
+.work-btn {
+    background: #4CAF50 !important;
+    border-color: #66bb6a !important;
+}
+
+.work-btn:hover {
+    background: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.break-btn {
+    background: #2196F3 !important;
+    border-color: #42a5f5 !important;
+}
+
+.break-btn:hover {
+    background: #1976D2 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+/* Make buttons look like links for navigation */
+a.start-btn, a.back-btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    background: #4CAF50 !important;
+    color: white !important;
+    border: 1px solid #66bb6a !important;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+a.back-btn {
+    background: #666 !important;
+    border-color: #888 !important;
+}
+
+a.start-btn:hover, a.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+a.start-btn:hover {
+    background: #45a049 !important;
+}
+
+a.back-btn:hover {
+    background: #777 !important;
+}
+
+/* Alarm page specific styling */
+body.alarm-page {
+    background: #ff6b6b;
+    transition: none;
+}
+
+.alarm-page .container {
+    background: #d32f2f;
+    border: 2px solid #ff5252;
+}
+/* Sound Selector Styles */
+.sound-options {
+    margin: 1.5rem 0;
+}
+
+.sound-option {
+    display: flex;
+    align-items: center;
+    background: #2c2c2c;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+    border: 1px solid #444;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sound-option:hover {
+    background: #3c3c3c;
+    transform: translateY(-2px);
+}
+
+.sound-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    min-width: 50px;
+}
+
+.sound-info {
+    flex: 1;
+    text-align: left;
+}
+
+.sound-info h3 {
+    color: white;
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+}
+
+.sound-info p {
+    color: #bbdefb;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.preview-btn {
+    background: #2196F3 !important;
+    border-color: #42a5f5 !important;
+    padding: 8px 16px !important;
+    font-size: 0.8rem !important;
+}
+
+.preview-btn:hover {
+    background: #1976D2 !important;
+}
+
+.sound-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.settings-btn {
+    background: #9C27B0 !important;
+    border-color: #BA68C8 !important;
+    margin-top: 0.5rem;
+}
+
+.settings-btn:hover {
+    background: #7B1FA2 !important;
+}
